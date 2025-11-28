@@ -20,7 +20,8 @@
 PFCDEF_DRIVE_T     	 gsPFC_Drive;
 PFCDRV_PWMVAL            gsPFC_PwmVal;
 uint16_t  Fault_Watch=0;
-/******************************************************************************
+bool pfc_flag = false;
+/****************t*************************************************************
 * Static variables
 ******************************************************************************/
 bool_t bPFC_RUN; /* PFC run/stop command */
@@ -371,7 +372,7 @@ static void PFC_StateInitSlow()
 {
     if(--gsPFC_Drive.ui16CounterState == 0)
     {
-      //mark£¬to be confirmed how to calib adc offset
+      //markï¿½ï¿½to be confirmed how to calib adc offset
         if((gsPFC_Drive.sUInPeakDetection.f16Offset < PFC_I_HARDWARE_OFFSET-100)||(gsPFC_Drive.sUInPeakDetection.f16Offset > PFC_I_HARDWARE_OFFSET+100) )/* if offset over scale, use default */ 
         {
             gsPFC_Drive.sUInPeakDetection.f16Offset = PFC_I_HARDWARE_OFFSET;
@@ -434,12 +435,12 @@ static void PFC_StateStopSlow()
                     //Zero crossing closing relay
                     if(gsPFC_Drive.ui16CounterState == 0 && gsPFC_Drive.sUInPeakDetection.fltUInFilt < PFC_VIN_THRESHOLD_RELAY_ON)
                     {
-                        RELAY_ON();
+//                        RELAY_ON();
                             
                         /* HSCMP0_OUT is selected as trigger input for PWM0 FAULT channel 0 */                                                       
 
-                        gsPFC_Drive.sFlag.RelayFlag = 1;
-                        gsPFC_Drive.ui16CounterState = DELAY_BEFORE_CURRENT_CTRL;
+//                        gsPFC_Drive.sFlag.RelayFlag = 1;
+//                        gsPFC_Drive.ui16CounterState = DELAY_BEFORE_CURRENT_CTRL;
                     }
     		}
     	}
@@ -636,7 +637,10 @@ static void PFC_TransStopRun()
 	gsPFC_Drive.sFlag.PWM_enable = 1;
 	gsPFC_Drive.sICtrlPh1.fltDuty = 0;
 	PFC_PWM_UPDATE(gsPFC_Drive.sICtrlPh1.fltDuty);
+	if(pfc_flag == true)
+	{
 	PFC_ENABLE_PWM_OUTPUT();
+	}
 	gsPFC_Ctrl.uiCtrl |= SM_CTRL_RUN_ACK;
 }
 
@@ -850,7 +854,10 @@ static void PFC_StateRunLightload(void)
 		}
 		// if burst off time is longer than the minimum duration, stay in light load mode and burst on
 		gsPFC_Drive.sFlag.PWM_enable = 1;
+		if(pfc_flag == true)
+		{
 		PFC_ENABLE_PWM_OUTPUT();
+		}
 	}
 	
 	// output voltage drop too low , directly return to normal mode
@@ -860,7 +867,10 @@ static void PFC_StateRunLightload(void)
           gsPFC_Drive.sUCtrl.sUDcBusPiParams.fltIAccK_1 = gsPFC_Drive.sUCtrl.sUDcBusPiParams.fltLowerLim;
 		gsPFC_SubCtrl.eStateRunSub = NORMAL;
           gsPFC_Drive.sFlag.PWM_enable = 1;
-          PFC_ENABLE_PWM_OUTPUT();
+      	if(pfc_flag == true)
+      	{
+      	PFC_ENABLE_PWM_OUTPUT();
+      	}
 	}	
 #endif
 }

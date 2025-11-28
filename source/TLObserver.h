@@ -76,6 +76,7 @@ typedef struct
     uint16_t uw16PosIndexOld;
 }TLONLINE_T;
 
+extern TLONLINE_T sTLObser;
 extern void TLOnlineTuningUpdate(TLONLINE_T *ptr);
 extern void MAFilterTLUpdate(TLONLINE_T *ptr, MECH_POSITION_CALC_T *pMecPosition);
 #endif /* TLOBSERVER_H_ */

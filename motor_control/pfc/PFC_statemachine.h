@@ -19,10 +19,10 @@
 * Macros 
 ******************************************************************************/
 #define PFC_DISABLE_PWM_OUTPUT() FLEXPWM1->OUTEN &= ~PWM_OUTEN_PWMA_EN(0x8);  FLEXPWM1->OUTEN &= ~PWM_OUTEN_PWMB_EN(0x8);
-#define PFC_ENABLE_PWM_OUTPUT() // FLEXPWM1->OUTEN |= PWM_OUTEN_PWMA_EN(0x8);  FLEXPWM1->OUTEN |= PWM_OUTEN_PWMB_EN(0x8);
+#define PFC_ENABLE_PWM_OUTPUT()  FLEXPWM1->OUTEN |= PWM_OUTEN_PWMA_EN(0x8);  FLEXPWM1->OUTEN |= PWM_OUTEN_PWMB_EN(0x8);
 #define PFC_OVERVOLTAGE_FAULT()  0
 #define PFC_OVERCURRENT_FAULT()  (FLEXPWM1->FSTS & 0x2)
-#define PFC_CLEAR_OVERCURRENT_FAULT();
+#define PFC_CLEAR_OVERCURRENT_FAULT()  (FLEXPWM1->FSTS = (FLEXPWM1->FSTS & ~PWM_FSTS_FFULL_MASK) | PWM_FSTS_FFULL(0x3));
 #define PFC_CLEAR_OVERVOLTAGE_FAULT();
 #define RELAY_ON();         {GPIO_PinWrite(BOARD_INITGPIOPINS_RLY_IN_GPIO, BOARD_INITGPIOPINS_RLY_IN_PIN, 1);}
 #define RELAY_OFF();        {GPIO_PinWrite(BOARD_INITGPIOPINS_RLY_IN_GPIO, BOARD_INITGPIOPINS_RLY_IN_PIN, 0);}
@@ -38,6 +38,7 @@ typedef enum {
 } PFC_RUN_SUBSTATE_T;         /* Run sub-states */
 
 extern sm_app_ctrl_t  gsPFC_Ctrl;
+extern bool pfc_flag;
 extern PFCDEF_DRIVE_T  gsPFC_Drive;
 extern const pfc_app_state_fcn mPFC_STATE_RUN_TABLE[3];
 extern volatile float g_fltPFCCurrentScale, g_fltPFCVoltageScale;
@@ -59,6 +60,7 @@ typedef struct _sm_app_sub_ctrl
 
 extern PFCDRV_PWMVAL        gsPFC_PwmVal;
 extern sm_app_sub_ctrl_t    gsPFC_SubCtrl;
+extern bool pfc_flag;
 extern void PFC_FaultDetection(void);
 extern void PFC_PWM_UPDATE(float_t Duty);
 extern void PFC_Phase_detect(PFCDEF_DRIVE_T *ptr);

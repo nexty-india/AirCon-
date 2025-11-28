@@ -151,12 +151,15 @@ typedef struct _clock_setup
 /******************************************************************************
  * Global variable definitions
  ******************************************************************************/
+
+extern uint64_t g_sys_counter;
 extern mcdrv_eflexpwm_t g_sM1Pwm3ph;
 extern mcdrv_eflexpwm_t g_sM2Pwm3ph;
 extern mcdrv_adc_t g_sM1AdcSensor;
 extern mcdrv_adc_t g_sM2AdcSensor;
 extern mcdrv_adc_t g_sPFCAdcSensor;
 extern clock_setup_t g_sClockSetup;
+extern bool user_delay(uint32_t delay_ms, uint32_t *last_call_ms);
 extern void InitInputmux(void);
 extern void FMSTR_Recorder_Create(void);
 /*******************************************************************************

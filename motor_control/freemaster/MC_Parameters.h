@@ -6,7 +6,7 @@
 
 /*
     * FILE NAME: MC_Parameters.h
-    * DATE: Tue Nov 25 2025, 11:10:58
+    * DATE: Fri Nov 28 2025, 13:15:13
 */
 
 /*
@@ -20,9 +20,9 @@
         "compressorParametersFlux": 0.097475163,
         "compressorParametersUnom": 179,
         "compressorParametersImax": 10.12,
-        "compressorParametersUdcbMax": 443,
+        "compressorParametersUdcbMax": 443.3,
         "compressorParametersSpeedMax": 4200,
-        "compressorParametersUdcbUnder": 200,
+        "compressorParametersUdcbUnder": 180,
         "compressorParametersUdcbTrip": 380,
         "compressorParametersUdcbOver": 400,
         "compressorParametersSpeedOver": 4500,
@@ -49,7 +49,7 @@
         "compressorSpeedFilterFreq": 600,
         "compressorSpeedToFilterFreq": 400,
         "compressorOlStartSpeedRamp": 15000,
-        "compressorOlStartI": 3,
+        "compressorOlStartI": 2,
         "compressorOlMergeSpeed": 1500,
         "compressorMergeCoeff": 100,
         "compressorSpeedLoopCutOffFreq": 600,
@@ -175,13 +175,13 @@
 #define M1_FLUX (0.0974752F)
 #define M1_U_NOM (179.0F)
 #define M1_I_MAX (10.12F)
-#define M1_U_DCB_MAX (443.0F)
+#define M1_U_DCB_MAX (443.3F)
 #define M1_SPEED_MAX (4200.0F)
 #define M1_U_MAX  (M1_U_DCB_MAX/1.732F) 
 #define M1_N_ANGULAR_MAX (60.0/PI/2/M1_MOTOR_PP) 
 #define M1_N_NOM (M1_SPEED_NOM/M1_N_ANGULAR_MAX) 
 #define M1_N_MAX (M1_SPEED_MAX/M1_N_ANGULAR_MAX) 
-#define M1_U_DCB_UNDERVOLTAGE (200.0F)
+#define M1_U_DCB_UNDERVOLTAGE (180.0F)
 #define M1_U_DCB_TRIP (380.0F)
 #define M1_U_DCB_OVERVOLTAGE (400.0F)
 #define M1_SPEED_OVER (4500.0F)
@@ -218,7 +218,7 @@
 #define M1_SPEED_FILTER_FREQ (600.0F)
 #define M1_TO_SPEED_FILTER_FREQ (400.0F)
 #define M1_OL_START_SPEED_RAMP (15000.0F)
-#define M1_OL_START_I (3.0F)
+#define M1_OL_START_I (2.0F)
 #define M1_OL_MERGE_SPEED (1500.0F)
 #define M1_MERGE_COEFF (100.0F)
 #define M1_SPEED_IIR_B0 ((2*PI*M1_SPEED_FILTER_FREQ/M1_PWM_FREQ)/(2*PI*M1_SPEED_FILTER_FREQ/M1_PWM_FREQ + 2.0F)) 

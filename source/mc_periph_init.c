@@ -50,6 +50,10 @@ static void InitAOI1(void);
 /*******************************************************************************
  * Variables
  ******************************************************************************/
+
+uint64_t current_time;
+uint64_t g_sys_counter;
+
 /* configuration structure for 3-phase PWM mc driver */
 mcdrv_eflexpwm_t g_sM1Pwm3ph;
 mcdrv_eflexpwm_t g_sM2Pwm3ph;
@@ -187,6 +191,54 @@ static void InitPWM0(void)//PWM0_SM0-2 for compressor sampling and control，SM3
     NVIC_SetPriority(FLEXPWM0_SUBMODULE1_IRQn, 1U);//for inputmux signal enable
     NVIC_EnableIRQ(FLEXPWM0_SUBMODULE1_IRQn);
 }
+
+/*!
+ * @brief   uint64_t get_system_time_ms()
+ *           - 1ms slow loop increments
+ *
+ * @param   uint64_t
+ *
+ * @return  none
+ */
+
+uint64_t get_system_time_ms(void)
+{
+	return g_sys_counter;
+}
+
+/*!
+ * @brief   bool user_delay()
+ *           - Non-blocking Delay Implementation
+ *           - if time elapsed >= delay_ms return true
+ *
+ * @param   bool
+ *
+ * @return  none
+ */
+
+bool user_delay(uint32_t delay_ms, uint32_t *last_call_ms)
+{
+	// Remove static variable - use local instead
+    current_time = get_system_time_ms();
+
+	// Handle first call
+	if (*last_call_ms == 0)
+	{
+		*last_call_ms = current_time;
+		return false;
+	}
+
+	// Check for timer completion with overflow protection
+	if ((current_time - *last_call_ms) >= delay_ms)
+	{
+		*last_call_ms = 0;
+		return true;
+	}
+
+	return false;
+}
+
+
 /*!
  * @brief   void InitADC0(void)
  *           - Initialization of the ADC0 peripheral
@@ -292,7 +344,7 @@ static void InitLpCmp0(void)
     /* Configure the internal DAC to output half of reference voltage. */
     mLpcmpDacConfigStruct.enableLowPowerMode = false;
     mLpcmpDacConfigStruct.referenceVoltageSource = kLPCMP_VrefSourceVin1;//use VDD as DAC reference
-    mLpcmpDacConfigStruct.DACValue = 128+FRAC8(2*20.0/PFC_I_SCALE);  //20A protect
+    mLpcmpDacConfigStruct.DACValue = 128+FRAC8(2*PFC_IOVER_LIMIT/PFC_I_SCALE);  //20A protect
     LPCMP_SetDACConfig(CMP0, &mLpcmpDacConfigStruct);
 
     /* Configure LPCMP input channels: ch2 and DAC ch7. */
