@@ -82,7 +82,8 @@ typedef enum {
 } uart_state_t;
 
 
-#define UART_TIMEOUT_MAX 280
+//#define UART_TIMEOUT_MAX 280
+#define UART_TIMEOUT_MAX 400
 
 void uart0_sm(void);
 void initialize_uart0_transfers(void);

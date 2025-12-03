@@ -736,7 +736,6 @@ static void InitUART0(void)
 		config.enableTx     = true;
 		config.enableRx     = true;
 		config.parityMode = kLPUART_ParityEven;
-
 		LPUART_Init((LPUART_Type *)LPUART0, &config, 12000000U);
 
 		LPUART_TransferCreateHandle((LPUART_Type *)LPUART0, &LPUART0_handle, UART0_Callback, NULL);
@@ -757,7 +756,7 @@ static void InitUART1(void)
      */
 
     LPUART_GetDefaultConfig(&config);
-    config.baudRate_Bps = 115200U;
+    config.baudRate_Bps = 19200U;
     config.enableTx     = false;
     config.enableRx     = false;
 
