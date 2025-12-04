@@ -110,7 +110,7 @@ void main(void)
     while (1)
     {
 
-
+    	//send_start_data();
       /* FreeMASTER Polling function */
       FMSTR_Poll();
     }

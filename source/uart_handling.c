@@ -109,7 +109,7 @@ void uart0_sm(void)
 	if(uart_state == UART_STATE_TRANSMITTING)
 	{
 	    uartBufferInit(g_tx0Buffer);
-		g_tx0Buffer[BYTE_STOPBYTE] = STOP_BYTE;
+	g_tx0Buffer[BYTE_STOPBYTE] = STOP_BYTE;
 		LPUART_TransferSendNonBlocking((LPUART_Type *)LPUART0, &LPUART0_handle, &send0Xfer);
 
 	}
@@ -130,6 +130,30 @@ void uart0_sm(void)
 			uart_timeout_counter = 0;
 		}
 	}
+}
+
+void send_start_data()
+{
+	uint8_t g_tipString[] =
+			"Hello A\r\n";
+	/* Send g_tipString out. */
+	xfer.data     = g_tipString;
+	xfer.dataSize = sizeof(g_tipString) - 1;
+	tx0OnGoing     = true;
+	// LPUART_WriteBlocking((LPUART_Type *)LPUART0, (const uint8_t *)&g_tipString, xfer.dataSize);
+	LPUART_TransferSendNonBlocking((LPUART_Type *)LPUART0, &LPUART0_handle, &xfer);
+	/* Wait send finished */
+	while (tx0OnGoing)
+	{
+
+	}
+	// dataSend = false;
+	/* Start to echo. */
+	send0Xfer.data        = g_tx0Buffer;
+	send0Xfer.dataSize    = LPUART0_TX_BUFFER_SIZE;
+	receive0Xfer.data     = g_rx0Buffer;
+	receive0Xfer.dataSize = LPUART0_RX_BUFFER_SIZE;
+
 }
 
 
