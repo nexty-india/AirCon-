@@ -39,10 +39,21 @@ extern "C" {
  **********************************************************************************************************************/
 /* Initialization UART0 peripherals */
 
+/* Megmeet Rx and Tx Buffer */
+
 /* Rx transfer buffer size. */
-#define LPUART0_RX_BUFFER_SIZE 1
-  /* Rx transfer buffer size. */
-#define LPUART0_TX_BUFFER_SIZE 25
+#define MEGMEET_RX_BUFFER_SIZE 1
+/* Tx transfer buffer size. */
+#define MEGMEET_TX_BUFFER_SIZE 24
+
+/* TopBand Rx and Tx Buffer */
+
+/* Rx transfer buffer size */
+#define TOPBAND_RX_BUFFER_SIZE 1
+/*  Tx transfer buffer size */
+#define TOPBAND_TX_BUFFER_SIZE 29
+
+
   /* LPUART0 interrupt vector ID (number). */
 //#define LPUART0_IRQN LPUART0_IRQn
 
@@ -50,9 +61,9 @@ extern "C" {
 void BOARD_InitPeripherals(void);
 extern const lpuart_config_t LPUART0_config;
 extern lpuart_handle_t LPUART0_handle;
-extern uint8_t LPUART0_rxBuffer[LPUART0_RX_BUFFER_SIZE];
+extern uint8_t LPUART0_rxBuffer[MEGMEET_RX_BUFFER_SIZE];
 extern lpuart_transfer_t LPUART0_rxTransfer;
-extern uint8_t LPUART0_txBuffer[LPUART0_TX_BUFFER_SIZE];
+extern uint8_t LPUART0_txBuffer[MEGMEET_TX_BUFFER_SIZE];
 extern lpuart_transfer_t LPUART0_txTransfer;
 extern uint32_t state_change_delay;
 //extern size_t UART_BUFFER_SIZE;

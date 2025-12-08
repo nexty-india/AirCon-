@@ -696,15 +696,15 @@ static void InitAOI1(void)
 }
 
 lpuart_handle_t LPUART0_handle;
-uint8_t LPUART0_rxBuffer[LPUART0_RX_BUFFER_SIZE];
+uint8_t LPUART0_rxBuffer[MEGMEET_RX_BUFFER_SIZE];
 lpuart_transfer_t LPUART0_rxTransfer = {
 		.rxData = LPUART0_rxBuffer,
-		.dataSize = LPUART0_RX_BUFFER_SIZE
+		.dataSize = MEGMEET_RX_BUFFER_SIZE
 };
-uint8_t LPUART0_txBuffer[LPUART0_TX_BUFFER_SIZE];
+uint8_t LPUART0_txBuffer[MEGMEET_TX_BUFFER_SIZE];
 lpuart_transfer_t LPUART0_txTransfer = {
 		.data = LPUART0_txBuffer,
-		.dataSize = LPUART0_TX_BUFFER_SIZE
+		.dataSize = MEGMEET_TX_BUFFER_SIZE
 };
 
 static void InitUART0(void)
