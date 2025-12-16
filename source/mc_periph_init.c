@@ -31,7 +31,9 @@
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
-/* Motor 1 */
+TEMP_SENSOR_t Sensor_param;
+
+ /* Motor 1 */
 static void InitADC0(void);
 static void InitPWM0(void);
 static void InitOpAmps(void);
@@ -63,6 +65,7 @@ mcdrv_eflexpwm_t g_sM2Pwm3ph;
 mcdrv_adc_t g_sM1AdcSensor;
 mcdrv_adc_t g_sM2AdcSensor;
 mcdrv_adc_t g_sPFCAdcSensor;
+mcdrv_adc_t g_TempAdcSensor;
 
 /* Clock setup structure */
 clock_setup_t g_sClockSetup;
@@ -206,9 +209,7 @@ static void InitPWM0(void)//PWM0_SM0-2 for compressor sampling and control，SM3
  */
 static void InitADC0(void)/* for compressor sampling */
 {
-  lpadc_config_t lpadcConfig;
-  
-  /* Init the lpadcConfig */
+   /* Init the lpadcConfig */
   LPADC_GetDefaultConfig(&lpadcConfig);
   lpadcConfig.enableAnalogPreliminary = true;
   lpadcConfig.powerLevelMode = kLPADC_PowerLevelAlt4;
@@ -253,10 +254,56 @@ static void InitADC0(void)/* for compressor sampling */
   lpadcCommandConfig.conversionResolutionMode = kLPADC_ConversionResolutionHigh;
   lpadcCommandConfig.hardwareAverageMode = kLPADC_HardwareAverageCount1;
   lpadcCommandConfig.sampleTimeMode = kLPADC_SampleTimeADCK3;
-  lpadcCommandConfig.chainedNextCommandNumber = 0U;                           /* Next execuited CMD will be CMD0 */
+  lpadcCommandConfig.chainedNextCommandNumber = 4U;                           /* Next execuited CMD will be CMD0 */
   lpadcCommandConfig.enableWaitTrigger = 1;
   LPADC_SetConvCommandConfig( ADC0, 3U, &lpadcCommandConfig );                /* Configure the CMD 3 */
   
+  /* Set conversion CMD4 configuration. */
+  LPADC_GetDefaultConvCommandConfig(&lpadcCommandConfig);
+  lpadcCommandConfig.channelNumber = 3U;                                      /* Condensor Temperature */
+  lpadcCommandConfig.sampleChannelMode = kLPADC_SampleChannelSingleEndSideA;
+  lpadcCommandConfig.conversionResolutionMode = kLPADC_ConversionResolutionHigh;
+  lpadcCommandConfig.hardwareAverageMode = kLPADC_HardwareAverageCount1;
+  lpadcCommandConfig.sampleTimeMode = kLPADC_SampleTimeADCK3;
+  lpadcCommandConfig.chainedNextCommandNumber = 5U;                           /* Next execuited CMD will be CMD0 */
+  lpadcCommandConfig.enableWaitTrigger = 0;
+  LPADC_SetConvCommandConfig( ADC0, 4U, &lpadcCommandConfig );                /* Configure the CMD 4 */
+
+  /* Set conversion CMD5 configuration. */
+  LPADC_GetDefaultConvCommandConfig(&lpadcCommandConfig);
+  lpadcCommandConfig.channelNumber = 1U;                                      /* Ambient Temperature */
+  lpadcCommandConfig.sampleChannelMode = kLPADC_SampleChannelSingleEndSideA;
+  lpadcCommandConfig.conversionResolutionMode = kLPADC_ConversionResolutionHigh;
+  lpadcCommandConfig.hardwareAverageMode = kLPADC_HardwareAverageCount1;
+  lpadcCommandConfig.sampleTimeMode = kLPADC_SampleTimeADCK3;
+  lpadcCommandConfig.chainedNextCommandNumber = 6U;                           /* Next execuited CMD will be CMD0 */
+  lpadcCommandConfig.enableWaitTrigger = 0;
+  LPADC_SetConvCommandConfig( ADC0, 5U, &lpadcCommandConfig );                /* Configure the CMD 5 */
+
+  /* Set conversion CMD6 configuration. */
+  LPADC_GetDefaultConvCommandConfig(&lpadcCommandConfig);
+  lpadcCommandConfig.channelNumber = 23U;                                      /* Discharge Temperature */
+  lpadcCommandConfig.sampleChannelMode = kLPADC_SampleChannelSingleEndSideA;
+  lpadcCommandConfig.conversionResolutionMode = kLPADC_ConversionResolutionHigh;
+  lpadcCommandConfig.hardwareAverageMode = kLPADC_HardwareAverageCount1;
+  lpadcCommandConfig.sampleTimeMode = kLPADC_SampleTimeADCK3;
+  lpadcCommandConfig.chainedNextCommandNumber = 7U;                           /* Next execuited CMD will be CMD0 */
+  lpadcCommandConfig.enableWaitTrigger = 0;
+  LPADC_SetConvCommandConfig( ADC0, 6U, &lpadcCommandConfig );
+
+  /* Set conversion CMD7 configuration. */
+//  LPADC_GetDefaultConvCommandConfig(&lpadcCommandConfig);
+//  lpadcCommandConfig.channelNumber = 19U;                                      /* Heat Sink Temperature */
+//  lpadcCommandConfig.sampleChannelMode = kLPADC_SampleChannelSingleEndSideA;
+//  lpadcCommandConfig.conversionResolutionMode = kLPADC_ConversionResolutionHigh;
+//  lpadcCommandConfig.hardwareAverageMode = kLPADC_HardwareAverageCount1;
+//  lpadcCommandConfig.sampleTimeMode = kLPADC_SampleTimeADCK3;
+//  lpadcCommandConfig.chainedNextCommandNumber = 0U;                           /* Next execuited CMD will be CMD0 */
+//  lpadcCommandConfig.enableWaitTrigger = 0;
+//  LPADC_SetConvCommandConfig( ADC0, 7U, &lpadcCommandConfig );
+
+
+
   /* Init triggers (use trigger 0). */
   LPADC_GetDefaultConvTriggerConfig(&lpadcTriggerConfig);
   lpadcTriggerConfig.targetCommandId = 1U;
@@ -267,6 +314,7 @@ static void InitADC0(void)/* for compressor sampling */
   LPADC_EnableInterrupts(ADC0, ADC_IE_TCOMP_IE(0x1U));//Only trigger source 0 trigger the interrupt
   NVIC_SetPriority(ADC0_IRQn, 4U);
   NVIC_EnableIRQ(ADC0_IRQn);
+
 }
 
 /*!
@@ -487,6 +535,42 @@ static void InitPWM1(void)/* PWM1_SM0-2 for fan control, SM3 for PFC PWM output 
  *
  * @return  none
  */
+
+//static void InitADC0(void)
+//{
+//	lpadc_config_t lpadcConfig0;
+//
+//	  LPADC_GetDefaultConfig(&lpadcConfig0);
+//	  lpadcConfig0.enableAnalogPreliminary = true;
+//	  lpadcConfig0.powerLevelMode = kLPADC_PowerLevelAlt4;
+//	  lpadcConfig0.referenceVoltageSource = kLPADC_ReferenceVoltageAlt3;
+//	  lpadcConfig0.conversionAverageMode = kLPADC_ConversionAverage128;
+//
+//	  lpadc_conv_trigger_config_t lpadcTriggerConfig0;
+//	  lpadc_conv_command_config_t lpadcCommandConfig0;
+//
+//	  LPADC_Init(ADC0, &lpadcConfig0);
+//
+//	  LPADC_DoOffsetCalibration(ADC0);
+//	  LPADC_DoAutoCalibration(ADC0);
+//
+//	  LPADC_GetDefaultConvCommandConfig(&lpadcCommandConfig0);
+//	  lpadcCommandConfig0.channelNumber = 19U;                                      /* Set ADC channel ADC1IN2 (FAN_IW) */
+//	  lpadcCommandConfig0.sampleChannelMode = kLPADC_SampleChannelSingleEndSideA;
+//	  lpadcCommandConfig0.conversionResolutionMode = kLPADC_ConversionResolutionHigh;
+//	  lpadcCommandConfig0.chainedNextCommandNumber = 2U;                           /* Next execuited CMD will be CMD2 */
+//	  LPADC_SetConvCommandConfig( ADC0, 1U, &lpadcCommandConfig0 );                /* Configure the CMD1 */
+//
+//	  LPADC_GetDefaultConvCommandConfig(&lpadcCommandConfig0);
+//	  lpadcCommandConfig0.channelNumber = 23U;                                      /* Set ADC channel ADC1IN2 (FAN_IW) */
+//	  lpadcCommandConfig0.sampleChannelMode = kLPADC_SampleChannelSingleEndSideA;
+//	  lpadcCommandConfig0.conversionResolutionMode = kLPADC_ConversionResolutionHigh;
+//	  lpadcCommandConfig0.chainedNextCommandNumber = 3U;                           /* Next execuited CMD will be 0 */
+//	  LPADC_SetConvCommandConfig( ADC0, 0U, &lpadcCommandConfig0 );
+//
+//
+//}
+
 static void InitADC1(void)
 {
   lpadc_config_t lpadcConfig;
@@ -822,7 +906,7 @@ void MCDRV_Init(void)
 {
     InitClock();                /* Init application clock dependent variables */
     InitSlowLoop();             /* Init slow loop counter */
-
+    InitTempSensor(&Sensor_param);
     InitADC1();                 /* Init ADC1 */
     InitOpAmps();               /* Init OPAMPS */
     InitLpCmp0();               /* Init Low Power Comparator 0 */

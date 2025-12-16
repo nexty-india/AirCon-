@@ -149,6 +149,7 @@ static void M1_StateFaultFast(void)
     /* read ADC results (ADC triggered by HW trigger from PDB) */
     /* get all adc samples - DC-bus voltage, current, bemf and aux sample */
     M1_MCDRV_ADC_GET(&g_sM1AdcSensor);
+
     //trigger for temperature sampling
 //    ADC1->SWTRIG = 1 << 1;
 
@@ -176,7 +177,7 @@ static void M1_StateFaultFast(void)
     /* Disable user application switch */
     g_bM1SwitchAppOnOff = FALSE;
     
-//    MCDRV_TemperatureGet(&g_sM1AdcSensor);
+   //MCDRV_TemperatureGet(&g_sM1AdcSensor);
 
     /* PWM peripheral update */
     M1_MCDRV_PWM3PH_SET(&g_sM1Pwm3ph);
@@ -392,6 +393,8 @@ static void M1_StateInitFast(void)
     /* ADC base address */
     g_sM1AdcSensor.pToAdcBase = (ADC_Type *)ADC0;
 
+
+
     /* INIT_DONE command */
     g_sM1Ctrl.uiCtrl |= SM_CTRL_INIT_DONE;
 }
@@ -450,7 +453,7 @@ static void M1_StateStopFast(void)
         g_sM1Ctrl.uiCtrl |= SM_CTRL_FAULT;
     }
 
-//    MCDRV_TemperatureGet(&g_sM1AdcSensor);
+    //MCDRV_TemperatureGet(&g_sM1AdcSensor);
     
     /* PWM peripheral update */
     M1_MCDRV_PWM3PH_SET(&g_sM1Pwm3ph);
@@ -515,7 +518,7 @@ static void M1_StateRunFast(void)
     /* Run sub-state function */
     s_M1_STATE_RUN_TABLE_FAST[g_eM1StateRun]();
 
-//    MCDRV_TemperatureGet(&g_sM1AdcSensor);
+   MCDRV_TemperatureGet(&g_sM1AdcSensor);
 }
 
 /*!

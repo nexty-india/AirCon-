@@ -85,31 +85,33 @@ void MegmeetTxBufferInit(uint8_t *tx)
 {
 
 
-	        g_Megmeettx0Buffer[HEAD_CODE] = 0xAB;
-		 	g_Megmeettx0Buffer[INFO_CODE] = 0x01;
-		 	g_Megmeettx0Buffer[DATA_LENGTH] = 0x13;       // ODU to IDU
-		 	g_Megmeettx0Buffer[HEAD] = 0x32;     // IDU address
-		 	g_Megmeettx0Buffer[MODE_AND_FUNCTION] = 0x08;
-		 	g_Megmeettx0Buffer[RESERVE1] = 0x00;
-		 	g_Megmeettx0Buffer[SETTING_TEMP] = 0x00;
-		 	g_Megmeettx0Buffer[INDOOR_ROOM_TEMP] = 0x00; // Only lower 3 bits used
-		 	g_Megmeettx0Buffer[INDOOR_ROOM_TEMP_DECIMAL] = 0x59;
-		 	g_Megmeettx0Buffer[INDOOR_EVAPORATOR_TEMP] = 0x59;
-		 	g_Megmeettx0Buffer[INDOOR_FAV_LEVEL] = 0x59;
-		 	g_Megmeettx0Buffer[INDOOR_FAN_RUNNING_SPEED] = 0x59;
-		 	g_Megmeettx0Buffer[RESERVE2] = 0x00;
-		 	g_Megmeettx0Buffer[BYTE_13] = 0x00;
-		 	g_Megmeettx0Buffer[IDU_ERROR] = 0x00;
-		 	g_Megmeettx0Buffer[HUMIDITY_VALUE] = 0x00;
-		 	g_Megmeettx0Buffer[HUMIDITY_FUNCTION] = 0x00;
-		 	g_Megmeettx0Buffer[HUMIDITY_ZONE1] = 0x00;
-		 	g_Megmeettx0Buffer[HUMIDITY_ZONE2] = 0x59;
-		 	g_Megmeettx0Buffer[BYTE19_5IN1] = 0x00;
-		 	g_Megmeettx0Buffer[EEV_OPEN_STEP_HIGH] = 0x00;
-		 	g_Megmeettx0Buffer[EEV_OPEN_STEP_LOW] = 0x00;
-		 	g_Megmeettx0Buffer[VERIFY_VALUE] = 0xF5;
-		 	g_Megmeettx0Buffer[END_CODE] = 0x55;
+	        g_Megmeettx0Buffer[ODU_HEAD_CODE] = 0xAB;
+		 	g_Megmeettx0Buffer[ODU_INFO_CODE] = 0x01;
+		 	g_Megmeettx0Buffer[ODU_DATA_LENGTH] = 0x13;       // ODU to IDU
+		 	g_Megmeettx0Buffer[ODU_MACHINE_TYPE] = 0x32;     // IDU address
+		 	g_Megmeettx0Buffer[ODU_RUNNING_STATE] = 0x08;  //g_sM1Drive.sScalarCtrl.fltFreqCmd
+//		 	g_Megmeettx0Buffer[ODU_COMPRESSOR_TARGET_FREQUENCY] = 0x00;
+//	        g_Megmeettx0Buffer[ODU_COMPRESSOR_RUNNING_FREQUENCY] = 0x00;
+//		 	g_Megmeettx0Buffer[ODU_OUTDOOR_ERROR_AND_PROTECTION] = 0x00; // Only lower 3 bits used
+//		 	g_Megmeettx0Buffer[ODU_OUTDOOR_CONDENSOR_TEMPERATURE] = 0x59;
+//		 	g_Megmeettx0Buffer[ODU_OUTDOOOR_AMBIENT_TEMPERATURE] = 0x59;
+//		 	g_Megmeettx0Buffer[ODU_COMPRESSOR_DISCHARGE_TEMPERATURE] = 0x59;
+//		 	g_Megmeettx0Buffer[ODU_COMPRESSOR_SUCTION_TEMPERATURE] = 0x59;
+//		 	g_Megmeettx0Buffer[ODU_COMPRESSOR_PHASE_CURRENT] = 0x00;
+//		 	g_Megmeettx0Buffer[ODU_AC_CURRENT] = 0x00;
+//		 	g_Megmeettx0Buffer[ODU_DC_CURRENT] = 0x00;
+//		 	g_Megmeettx0Buffer[ODU_EEV_OPEN_STEP] = 0x00;
+//		 	g_Megmeettx0Buffer[ODU_OUTDOOR_AC_FAN_LEVEL] = 0x00;
+//		 	g_Megmeettx0Buffer[ODU_RESERVE] = 0x00;
+//		 	g_Megmeettx0Buffer[ODU_IPM_TEMPERATURE] = 0x59;
+//		 	g_Megmeettx0Buffer[ODU_AC_VOLTAGE] = 0x00;
+//		 	g_Megmeettx0Buffer[ODU_COMPRESSOR_FREQUENCY_LIMIT] = 0x00;
+//		 	g_Megmeettx0Buffer[ODU_RESERVE] = 0x00;
+//		 	g_Megmeettx0Buffer[ODU_VERIFY] = 0xF5;
+//		 	g_Megmeettx0Buffer[ODU_END_CODE] = 0x55;
 }
+
+
 // void MegmeetRxBufferInit(uint8_t *rx)
 // {
 //
@@ -207,6 +209,7 @@ void TopbandBufferInit(uint8_t *tx)
  *
  * **/
 
+
 uint8_t calculate_checksum(uint8_t *data)
 {
   uint16_t checksum = 0;
@@ -219,7 +222,13 @@ uint8_t calculate_checksum(uint8_t *data)
   return (uint8_t)checksum;
 }
 
-bool decode_data(uint8_t *received_data)
+bool handle_tx_data(uint8_t *transmit_data)
+{
+
+
+}
+
+bool decode_rx_data(uint8_t *received_data)
 {
 
 
@@ -363,7 +372,7 @@ void UART0_Callback(LPUART_Type *base, lpuart_handle_t *handle, status_t status,
 
 		else {
 			// If the buffer is full, wait for the state machine to process the data and clear the buffer
-			decode_data(g_megmeet_rx_buffer);
+			decode_rx_data(g_megmeet_rx_buffer);
 			rx0BufferEmpty = true; // Set the RX buffer to empty state
 			g_megmeet_rx_buffer_index = 0;
 

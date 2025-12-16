@@ -76,6 +76,8 @@
 #define M1_MCDRV_CURR_3PH_CALIB(par) (MCDRV_Curr3Ph2ShCalib(par))
 #define M1_MCDRV_CURR_3PH_CALIB_SET(par) (MCDRV_Curr3Ph2ShCalibSet(par))
 
+
+#define TEMP_SENS(par) (update_raw_sensor_Value(par))
 /******************************************************************************
  * Define motor 2 ADC control functions
  ******************************************************************************/
@@ -156,6 +158,7 @@ extern mcdrv_eflexpwm_t g_sM2Pwm3ph;
 extern mcdrv_adc_t g_sM1AdcSensor;
 extern mcdrv_adc_t g_sM2AdcSensor;
 extern mcdrv_adc_t g_sPFCAdcSensor;
+extern mcdrv_adc_t g_TempAdcSensor;
 extern clock_setup_t g_sClockSetup;
 extern void InitInputmux(void);
 extern void FMSTR_Recorder_Create(void);

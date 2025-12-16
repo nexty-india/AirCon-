@@ -40,6 +40,12 @@
     uint32_t load = SysTick->LOAD; \
     par1          = load - val
 
+
+
+//TEMP_SENSOR_VALUE_t adc0;
+//mcdrv_adc_t adc0;
+
+
 /* CPU load measurement using Systick */
 uint32_t g_ui32NumberOfCycles    = 0U;
 uint32_t g_ui32MaxNumberOfCycles = 0U;
@@ -99,7 +105,7 @@ void main(void)
     
     /* SysTick initialization for CPU load measurement */
     BOARD_InitSysTick();
-    
+
     //PWM counter must run just before IRQ enable
     FLEXPWM0->MCTRL = (FLEXPWM0->MCTRL & ~PWM_MCTRL_RUN_MASK) | PWM_MCTRL_RUN(0xF);
     FLEXPWM1->MCTRL = (FLEXPWM1->MCTRL & ~PWM_MCTRL_RUN_MASK) | PWM_MCTRL_RUN(0xF);
@@ -109,8 +115,8 @@ void main(void)
 
     while (1)
     {
+    	   TEMP_SENS(&g_TempAdcSensor);
 
-    	//send_start_data();
       /* FreeMASTER Polling function */
       FMSTR_Poll();
     }
@@ -135,6 +141,7 @@ void ADC0_IRQHandler(void)
 #endif
     /* Transfer the UDCB voltage for Compressor control */
     g_sM1Drive.sFocPMSM.f16UDcBus = gsPFC_Drive.sUInPeakDetection.f16Udcb;
+
     /* StateMachine call */
     SM_StateMachineFast(&g_sM1Ctrl);
 
@@ -193,7 +200,7 @@ void CTIMER0_IRQHandler(void)
     /* Clear the match interrupt flag. */
     CTIMER0->IR |= CTIMER_IR_MR0INT(1U);
     //state_change_delay++;
-
+   // TEMP_SENS(&g_TempAdcSensor);
 
 #ifdef Slow
     GPIO_PinWrite(GPIO3, 6, 1);

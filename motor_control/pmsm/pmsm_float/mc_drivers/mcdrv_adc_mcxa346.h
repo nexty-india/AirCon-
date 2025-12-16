@@ -67,6 +67,27 @@ typedef struct _pha_ac
 
 } pha_ac_t;
 
+typedef struct
+{
+	    uint16_t SENSOR_BETA_VALUE;
+		uint16_t SENSOR_TYPICAL_RESISTANCE_AT_SET_TEMP_VALUE;
+		float SENSOR_TYPICAL_VALUE_OF_SET_TEMP_KELVIN;
+		uint16_t SENSOR_PU_PD_RESISTANCE_VALUE;
+
+}TEMP_SENSOR_CONFIG_t;
+
+
+
+typedef struct
+{
+	TEMP_SENSOR_CONFIG_t TEMP_SENSOR_COMPRESSOR;
+	TEMP_SENSOR_CONFIG_t TEMP_SENSOR_DISCHARGE;
+	TEMP_SENSOR_CONFIG_t TEMP_SENSOR_SUCTION;
+	TEMP_SENSOR_CONFIG_t TEMP_SENSOR_AMBIENT;
+	TEMP_SENSOR_CONFIG_t TEMP_SENSOR_IPM;
+}TEMP_SENSOR_t;
+
+
 typedef struct _mcdrv_adc
 {
     ADC_Type * pToAdcBase;
@@ -90,6 +111,20 @@ typedef struct _mcdrv_adc
     uint16_t ui16AdcSmpChannelA;
     uint16_t ui16AdcSmpChannelB;
     
+    uint16_t ui16HeatSinkTempRaw;
+    uint16_t ui16CondensorTempRaw;
+    uint16_t ui16AmbientTempRaw;
+    uint16_t ui16DischargeTempRaw;
+
+
+    uint32_t DischargeTempFiltered ;
+    uint32_t AmbientTempFiltered;
+    uint32_t CondensorTempFiltered;
+
+    int16_t DischargeTempActual;
+    int16_t AmbientTempActual;
+    int16_t CondesnorTempActual;
+
     uint16_t ui16EXHTemp;
     uint16_t ui16PIPTemp;
     uint16_t ui16ENVTemp;
@@ -115,6 +150,8 @@ void MCDRV_FanCurrentGet(mcdrv_adc_t *this);
  * @return none
  */
 void MCDRV_Curr3Ph2ShCalibInit(mcdrv_adc_t *this);
+
+ void InitTempSensor(TEMP_SENSOR_t *Temp_Sensor);
 
 void MCDRV_Curr3Ph2ShChanAssign(mcdrv_adc_t *this);
 
