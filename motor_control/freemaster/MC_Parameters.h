@@ -6,16 +6,16 @@
 
 /*
     * FILE NAME: MC_Parameters.h
-    * DATE: Fri Nov 28 2025, 13:15:13
+    * DATE: Fri Dec 19 2025, 10:51:53
 */
 
 /*
 {
     "compressorParameters": {
         "compressorParametersPP": 3,
-        "compressorParametersR": 1.1,
-        "compressorParametersLD": 0.009,
-        "compressorParametersLQ": 0.011,
+        "compressorParametersR": 2.53,
+        "compressorParametersLD": 0.0148,
+        "compressorParametersLQ": 0.01165,
         "compressorParametersSpeedNom": 4000,
         "compressorParametersFlux": 0.097475163,
         "compressorParametersUnom": 179,
@@ -95,17 +95,17 @@
         "compressorFluxMax": 1.5
     },
     "fanParameters": {
-        "fanParametersPP": 4,
-        "fanParametersR": 55.875,
-        "fanParametersLD": 0.14075,
-        "fanParametersLQ": 0.14425,
-        "fanParametersSpeedNom": 900,
-        "fanParametersFlux": 0.02161166,
+        "fanParametersPP": 5,
+        "fanParametersR": 35.85,
+        "fanParametersLD": 0.0925,
+        "fanParametersLQ": 0.108,
+        "fanParametersSpeedNom": 1100,
+        "fanParametersFlux": 0.248098003,
         "fanParametersUnom": 179,
         "fanParametersImax": 1.584,
         "fanParametersUdcbMax": 443.3,
         "fanParametersSpeedMax": 1500,
-        "fanParametersSpeedOver": 1200,
+        "fanParametersSpeedOver": 1300,
         "fanParametersSpeedMin": 150,
         "fanParametersCalibDuration": 200,
         "fanParametersFaultDurationTime": 3000,
@@ -146,7 +146,7 @@
         "sensorEncPulseNumber": "",
         "sensorEncDir": "",
         "sensorEncNmin": "",
-        "sensorObsrvParSampleTime": 0.00016,
+        "sensorObsrvParSampleTime": "",
         "sensorObsrvParF0": "",
         "sensorObsrvParKsi": "",
         "positionLoopPLKp": ""
@@ -168,9 +168,9 @@
 
 /* COMPRESSORPARAMETERS*/
 #define M1_MOTOR_PP (3)
-#define M1_R (1.1F)
-#define M1_LD (0.009F)
-#define M1_LQ (0.011F)
+#define M1_R (2.53F)
+#define M1_LD (0.0148F)
+#define M1_LQ (0.01165F)
 #define M1_SPEED_NOM (4000.0F)
 #define M1_FLUX (0.0974752F)
 #define M1_U_NOM (179.0F)
@@ -295,12 +295,12 @@
 #define TORQUE_MAX (1.5*M1_MOTOR_PP*FLUX_MAX*M1_I_MAX) 
 #define NUM_TL_TABLE (1 << (16 - SHIFT_INDEX_TABLE)) 
 /* FANPARAMETERS*/
-#define M2_MOTOR_PP (4)
-#define M2_R (55.875F)
-#define M2_LD (0.14075F)
-#define M2_LQ (0.14425F)
-#define M2_SPEED_NOM (900.0F)
-#define M2_FLUX (0.0216117F)
+#define M2_MOTOR_PP (5)
+#define M2_R (35.85F)
+#define M2_LD (0.0925F)
+#define M2_LQ (0.108F)
+#define M2_SPEED_NOM (1100.0F)
+#define M2_FLUX (0.248098F)
 #define M2_U_NOM (179.0F)
 #define M2_I_MAX (1.584F)
 #define M2_U_DCB_MAX (443.3F)
@@ -310,7 +310,7 @@
 #define M2_N_NOM (M2_SPEED_NOM/M2_N_ANGULAR_MAX) 
 #define M2_N_MAX (M2_SPEED_MAX/M2_N_ANGULAR_MAX) 
 #define M2_FAST_LOOP_FREQ (M2_PWM_FREQ/M2_FOC_FREQ_VS_PWM_FREQ) 
-#define M2_SPEED_OVER (1200.0F)
+#define M2_SPEED_OVER (1300.0F)
 #define M2_SPEED_MIN (150.0F)
 #define M2_N_OVERSPEED (M2_SPEED_OVER/M2_N_ANGULAR_MAX) 
 #define M2_N_MIN (M2_SPEED_MIN/M2_N_ANGULAR_MAX) 
@@ -370,11 +370,11 @@
 #define M2_FLUX_TO_ATT (0.707F)
 #define M2_FLUX_TO_F0 (60.0F)
 #define M2_FLUX_GAMMA (1.5F)
-#define M2_FLUX_TO_KP_GAIN FRAC16(0.848400)
+#define M2_FLUX_TO_KP_GAIN FRAC16(0.678720)
 #define M2_FLUX_TO_KP_SHIFT (0)
-#define M2_FLUX_TO_KI_GAIN FRAC16(0.904779)
+#define M2_FLUX_TO_KI_GAIN FRAC16(0.723823)
 #define M2_FLUX_TO_KI_SHIFT (-5)
-#define M2_FLUX_TO_THETA_GAIN FRAC16(0.8)
+#define M2_FLUX_TO_THETA_GAIN FRAC16(1.00000)
 #define M2_FLUX_TO_THETA_SHIFT (-5)
 /* SENSORS*/
 #define M1_POSPE_ENC_PULSES 
@@ -384,7 +384,7 @@
 #define M1_POS_P_PROP_GAIN 
 #define M1_POSPE_TO_KP_GAIN 
 #define M1_POSPE_TO_KI_GAIN 
-#define M1_POSPE_TO_THETA_GAIN (0.0000509296F)
+#define M1_POSPE_TO_THETA_GAIN 
 /* USER INPUT START */
 /* USER INPUT END */
 #endif /* __MC_PARAMETERS_H_ */

@@ -51,6 +51,7 @@ bool Relay_startup_check = true;
 bool PFC_startup_check = true;
 bool Torq_comp_check = true;
 bool Comp_startup_check = true;
+bool Blower_startup_check = true;
 bool relayOn_flag =0;
 /*******************************************************************************
  * Prototypes
@@ -132,6 +133,8 @@ void main(void)
 		static uint32_t relay_Delay = 0;
 		static uint32_t compressor_Delay =0;
 		static uint32_t Torq_compensation_Delay = 0;
+		static uint32_t Blower_Delay = 0;
+
 
 
 		if(Relay_startup_check)
@@ -150,13 +153,21 @@ void main(void)
 				PFC_startup_check = false;
 		}
 
+		if(user_delay(18500,&Blower_Delay) && Blower_startup_check)
+		{
+			g_sM2Drive.eControl = kControlMode_SpeedFOC;
+			g_sM2Drive.sSpeed.fltSpeedCmd = 1000.0F/M2_N_ANGULAR_MAX;
+			g_bM2SwitchAppOnOff = TRUE;
+			g_sM2Ctrl.uiCtrl |= SM_CTRL_START;
+			Blower_startup_check = false;
+		}
+
 		if( user_delay(25500,&compressor_Delay) && Comp_startup_check)
 		{
 			g_sM1Drive.eControl = kControlMode_SpeedFOC;
 			g_sM1Drive.sSpeed.fltSpeedCmd = 1500.0F/M1_N_ANGULAR_MAX;
 			g_bM1SwitchAppOnOff = TRUE;
 			g_sM1Ctrl.uiCtrl |= SM_CTRL_START;
-
 			Comp_startup_check = false;
 
 		}

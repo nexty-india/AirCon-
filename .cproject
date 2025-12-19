@@ -375,7 +375,7 @@
 								<option id="com.crt.advproject.link.gcc.lto.372068611" name="Enable Link-time optimization (-flto)" superClass="com.crt.advproject.link.gcc.lto"/>
 								<option id="com.crt.advproject.link.gcc.lto.optmization.level.541413416" name="Link-time optimization level" superClass="com.crt.advproject.link.gcc.lto.optmization.level"/>
 								<option id="com.crt.advproject.link.manage.1647329675" name="Manage linker script" superClass="com.crt.advproject.link.manage" value="true" valueType="boolean"/>
-								<option id="com.crt.advproject.link.script.370690661" name="Linker script" superClass="com.crt.advproject.link.script" value="HVAC_3in1_MCXA346_Debug.ld" valueType="string"/>
+								<option id="com.crt.advproject.link.script.370690661" name="Linker script" superClass="com.crt.advproject.link.script" value="HVAC_3in1_MCXA346_uart_working_Debug.ld" valueType="string"/>
 								<option id="com.crt.advproject.link.scriptdir.1000196683" name="Script path" superClass="com.crt.advproject.link.scriptdir"/>
 								<option id="com.crt.advproject.link.crpenable.1801012092" name="Enable automatic placement of Code Read Protection field in image" superClass="com.crt.advproject.link.crpenable"/>
 								<option id="com.crt.advproject.link.flashconfigenable.1423423595" name="Enable automatic placement of Flash Configuration field in image" superClass="com.crt.advproject.link.flashconfigenable" value="true" valueType="boolean"/>
@@ -794,7 +794,7 @@
 								<option id="com.crt.advproject.link.gcc.lto.optmization.level.148551743" name="Link-time optimization level" superClass="com.crt.advproject.link.gcc.lto.optmization.level"/>
 								<option id="com.crt.advproject.link.fpu.1199857185" name="Floating point" superClass="com.crt.advproject.link.fpu" value="com.crt.advproject.link.fpu.fpv5sp.hard" valueType="enumerated"/>
 								<option id="com.crt.advproject.link.manage.903061552" name="Manage linker script" superClass="com.crt.advproject.link.manage" value="true" valueType="boolean"/>
-								<option id="com.crt.advproject.link.script.575215065" name="Linker script" superClass="com.crt.advproject.link.script" value="HVAC_3in1_MCXA346_Release.ld" valueType="string"/>
+								<option id="com.crt.advproject.link.script.575215065" name="Linker script" superClass="com.crt.advproject.link.script" value="HVAC_3in1_MCXA346_uart_working_Release.ld" valueType="string"/>
 								<option id="com.crt.advproject.link.scriptdir.524745308" name="Script path" superClass="com.crt.advproject.link.scriptdir"/>
 								<option id="com.crt.advproject.link.crpenable.2103141855" name="Enable automatic placement of Code Read Protection field in image" superClass="com.crt.advproject.link.crpenable"/>
 								<option id="com.crt.advproject.link.flashconfigenable.1334545888" name="Enable automatic placement of Flash Configuration field in image" superClass="com.crt.advproject.link.flashconfigenable" value="true" valueType="boolean"/>
